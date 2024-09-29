@@ -10,15 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    
-    - name: hello world 출력!!
-      run: echo "hello world!"
-    
-    - name: 디렉토리 출력!!
-      run: ls -al
-    
-    - name: 파이썬 버전 출력!!
-      run: python --version
-
+    - uses: actions/checkout@v2 
     - name: 파이썬 실행 및 출력!!
       run: python  test.py
