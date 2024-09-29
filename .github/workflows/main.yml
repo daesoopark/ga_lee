@@ -1,0 +1,26 @@
+
+name: hello GA
+
+# on: 어떤 조건일 때 파일을 실행할 것인지 여부
+on:[push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    # run 뒤에는 실제 작동하는 코드를 넣어야 함.
+    - name: hello world 출력!!
+    - run: ecoh,  hello world!
+
+     - name: 디렉토리출력!!
+    - run: ls_al
+
+     - name: 파이썬버젼출력!!
+    - run: python -y
+    
+   
+
+
+
+    
