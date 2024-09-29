@@ -2,7 +2,7 @@
 name: hello GA
 
 # on: 어떤 조건일 때 파일을 실행할 것인지 여부
-on:[push]
+on: [push]
 
 jobs:
   build:
