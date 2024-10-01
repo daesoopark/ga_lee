@@ -1,11 +1,11 @@
-!pip install selenium
+pip install selenium
 
 from selenium import webdriver
 
 # Chrome 드라이버 다운로드 및 경로 설정(코랩)
-!apt-get update
-!apt install chromium-chromedriver
-!cp /usr/lib/chromium-browser/chromedriver /usr/bin
+apt-get update
+apt install chromium-chromedriver
+cp /usr/lib/chromium-browser/chromedriver /usr/bin
 
 # Chrome 드라이버 설정
 options = webdriver.ChromeOptions()
