@@ -55,6 +55,11 @@ bookservices = soup.select('.title_text')
 for no, book in enumerate(bookservices, 1):
     print(no, book.text.strip())
 
+# bookservices 리스트가 비어 있는지 확인
+if not bookservices:
+    print("bookservices 리스트가 비어 있습니다.")
+
+
 # 브라우저 닫기
 #driver.quit()
 
