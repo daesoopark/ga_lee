@@ -3,8 +3,8 @@ name: helloGA
 #on:
  # push: [push]
 
-on:
-  push:
+on: [push]
+  #push:
   #  branches: [ "main" ]
   #pull_request:
   #  branches: [ "main" ]
@@ -16,11 +16,11 @@ jobs:
     - uses: actions/checkout@v2 
 
 
-    - name: Install Chrome and ChromeDriver
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y chromium-browser chromium-chromedriver
-        if [ ! -f /usr/bin/chromedriver ]; then sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver; fi
+    # - name: Install Chrome and ChromeDriver
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y chromium-browser chromium-chromedriver
+    #     if [ ! -f /usr/bin/chromedriver ]; then sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver; fi
     
     - name: 1. 파일목록 출력
       run: ls -al
@@ -33,16 +33,17 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        pip install selenium
-        pip install beautifulsoup4
+    # - name: Install dependencies
+    #   run: |
+    #     pip install selenium
+    #     pip install beautifulsoup4
 
-    - name: Install Chrome and ChromeDriver
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y chromium-browser chromium-chromedriver
-        sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+
+    # - name: Install Chrome and ChromeDriver
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y chromium-browser chromium-chromedriver
+    #     sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
     
     - name: 3. pip upgrade
       run: python -m pip install  --upgrade pip  
