@@ -42,7 +42,7 @@ response.encoding='utf-8'
 
 
 # 페이지의 HTML 가져오기
-#html = driver.page_source     # driver.page_source
+html = driver.page_source     # driver.page_source
 html= response.text
 soup = BeautifulSoup(html, 'html.parser')
 
