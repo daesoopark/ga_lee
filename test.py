@@ -27,7 +27,7 @@ import time
 # 웹 페이지 열기
 #driver.get("https://select.ridibooks.com/categories/2200?sort=popular&page=1" )
 url = "https://select.ridibooks.com/categories/2200?sort=popular&page=1"
-#url = "https://ridibooks.com/categories/new-releases/2200"
+#url = "https://ridibooks.com/categories/new-releases/2200"  # 없는 페이지
 
 
 response= requests.get(url)
@@ -49,8 +49,9 @@ soup = BeautifulSoup(html, 'html.parser')
 
 # 원하는 데이터 선택
 bookservices = soup.select('h3.GridBookList_ItemTitle')
-#bookservices = soup.select('.title_text')
 #h3.GridBookList_ItemTitle
+bookservices =  bookservices.text()
+#bookservices = soup.select('.title_text')
 #a.GridBookList_ItemLink
 
 # 출력
