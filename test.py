@@ -50,7 +50,7 @@ soup = BeautifulSoup(html, 'html.parser')
 # 원하는 데이터 선택
 bookservices = soup.select('h3.GridBookList_ItemTitle')
 #h3.GridBookList_ItemTitle
-bookservices =  bookservices.text()
+#bookservices =  bookservices.text()
 #bookservices = soup.select('.title_text')
 #a.GridBookList_ItemLink
 
