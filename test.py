@@ -50,6 +50,8 @@ soup = BeautifulSoup(html, 'html.parser')
 # 원하는 데이터 선택
 bookservices = soup.select('h3.GridBookList_ItemTitle')
 #bookservices = soup.select('.title_text')
+#h3.GridBookList_ItemTitle
+#a.GridBookList_ItemLink
 
 # 출력
 for no, book in enumerate(bookservices, 1):
