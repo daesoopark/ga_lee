@@ -34,7 +34,7 @@ jobs:
       # 필요 시 환경 변수로 스크립트 이름 지정 가능
       - name: Run script
         env:
-          SCRIPT_NAME: balchun_9.py   # ← 여기만 바꾸면 됩니다
+          SCRIPT_NAME: test_2.py   # ← 여기만 바꾸면 됩니다
         run: |
           echo "Running $SCRIPT_NAME"
           python "$SCRIPT_NAME"
