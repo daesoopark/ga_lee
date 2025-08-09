@@ -52,3 +52,12 @@ jobs:
 
     - name: 5.파이썬 실행
       run: python test_2.py  
+
+    - name: Save output files
+      uses: actions/upload-artifact@v4
+      with:
+          name: output-files
+          path: |
+            df_bc_9.csv
+            df_bc_9.txt
+
