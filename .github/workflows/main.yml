@@ -1,63 +1,52 @@
-name: helloGA
+name: Run Python and upload outputs
 
-#on:
- # push: [push]
-on: [push]
-  #push:
-  #  branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
-  
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "**.py"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
 jobs:
-  build:
+  run-and-upload:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2 
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    # - name: Install Chrome and ChromeDriver
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y chromium-browser chromium-chromedriver
-    #     if [ ! -f /usr/bin/chromedriver ]; then sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver; fi
-    
-    - name: 1. 파일목록 출력
-      run: ls -al
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            python -m pip install -r requirements.txt
+          else
+            # 최소한 자주 쓰는 패키지 예시 (없으면 제거 가능)
+            python -m pip install pandas selenium webdriver-manager
+          fi
 
-    - name: 2. 파이썬 패키지 확인
-      run: pip list
+      # 필요 시 환경 변수로 스크립트 이름 지정 가능
+      - name: Run script
+        env:
+          SCRIPT_NAME: balchun_9_wdm.py   # ← 여기만 바꾸면 됩니다
+        run: |
+          echo "Running $SCRIPT_NAME"
+          python "$SCRIPT_NAME"
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    # - name: Install dependencies
-    #   run: |
-    #     pip install selenium
-    #     pip install beautifulsoup4
-
-
-    # - name: Install Chrome and ChromeDriver
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y chromium-browser chromium-chromedriver
-    #     sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
-    
-    - name: 3. pip upgrade
-      run: python -m pip install  --upgrade pip  
-
-    - name: 4. 파이썬 필요 패키지(requirements) 확인
-      run: pip install -r  requirements.txt
-
-    - name: 5.파이썬 실행
-      run: python test_2.py  
-
-    - name: Save output files
-      uses: actions/upload-artifact@v4
-      with:
+      # 생성된 파일 업로드 (여기서 원하는 패턴을 추가/수정하세요)
+      - name: Upload artifacts (CSV/TXT)
+        uses: actions/upload-artifact@v4
+        with:
           name: output-files
           path: |
-            df_bc_9.csv
-            df_bc_9.txt
+            *.csv
+            *.txt
+          if-no-files-found: warn
+          # retention-days: 30  # 보관 기간 조정 시 주석 해제
 
