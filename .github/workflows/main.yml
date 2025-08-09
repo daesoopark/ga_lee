@@ -8,6 +8,9 @@ on:
       - ".github/workflows/**"
   workflow_dispatch:
 
+permissions:
+  contents: write   # ⬅ 커밋/푸시 위해 필요
+
 jobs:
   run-and-upload:
     runs-on: ubuntu-latest
@@ -15,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 커밋/푸시를 위해 전체 이력 필요할 수 있음
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,19 +32,21 @@ jobs:
           if [ -f requirements.txt ]; then
             python -m pip install -r requirements.txt
           else
-            # 최소한 자주 쓰는 패키지 예시 (없으면 제거 가능)
             python -m pip install pandas selenium webdriver-manager
           fi
 
-      # 필요 시 환경 변수로 스크립트 이름 지정 가능
+      # 필요 시 환경 변수로 스크립트 이름 지정
       - name: Run script
         env:
-          SCRIPT_NAME: test_2.py   # ← 여기만 바꾸면 됩니다
+          SCRIPT_NAME: balchun_9_wdm.py   # ← 여기만 바꾸면 됩니다
         run: |
           echo "Running $SCRIPT_NAME"
           python "$SCRIPT_NAME"
 
-      # 생성된 파일 업로드 (여기서 원하는 패턴을 추가/수정하세요)
+      - name: List files after script
+        run: ls -al
+
+      # 생성된 파일을 Artifacts로도 업로드
       - name: Upload artifacts (CSV/TXT)
         uses: actions/upload-artifact@v4
         with:
@@ -48,5 +55,28 @@ jobs:
             *.csv
             *.txt
           if-no-files-found: warn
-          # retention-days: 30  # 보관 기간 조정 시 주석 해제
 
+      # 레포지토리에 자동 커밋/푸시
+      - name: Commit and push outputs to main
+        if: ${{ github.event_name != 'pull_request' }}  # PR 이벤트에선 푸시 안 함
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # git 사용자 설정
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+          # 변경 파일만 스테이징 (없으면 스킵)
+          git add *.csv *.txt 2>/dev/null || true
+
+          # 커밋할 것이 있는지 확인
+          if git diff --cached --quiet; then
+            echo "No CSV/TXT changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Add generated outputs (CSV/TXT) from workflow run"
+          # 리베이스/충돌 줄이기 위해 최신 반영 후 푸시
+          git pull --rebase origin "${GITHUB_REF##*/}" || true
+          git push origin "${GITHUB_REF##*/}"
